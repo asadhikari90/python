@@ -1,8 +1,9 @@
 name: Sonarqube linux Build for Python
 
 on:
-  workflow_dispatch:
-  workflow_call:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
