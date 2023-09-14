@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Sonarqube Testing
-    runs-on: ubuntu-latest #Can be parametized if needed
+    runs-on: ubuntu-latest #Can be parametized if neededs
     steps:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
