@@ -3,7 +3,7 @@ This is a Repo dedicated to creating a scheduled key management project that wil
 
 
 1. Configure .env file to include all environment vars. These vars will be used for authenticating into the LD api, database for auditing, and settings for determine who should be deleted.
-2. Make sure  3.x.x is installed on your running machine
+2. Make sure  3.x.x is installed on your running machine.
 3. In terminal run pip install -r requirements.txt
 3. Once these configurations are made the script will do the following
         1. Query launch darkly and get a list of all users who have not logged in LAUNCH_DARKLY_THRESHOLD of days
