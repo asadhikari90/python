@@ -26,7 +26,8 @@ jobs:
         source ~/.bashrc
 
     - name: Run SonarQube Scan
-      run: sonar-scanner -Dsonar.projectKey=testproj -Dsonar.sources=.
+      id: sonarqube-quality-gate-check
+      uses: sonarsource/sonarqube-quality-gate-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
