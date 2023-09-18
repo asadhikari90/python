@@ -34,7 +34,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x  #Can be parametized if needed
+          python-version: 3.x.x  #Can be parametized if needed
       - name: Install tox and any other packages
         run: pip install tox
 
