@@ -53,7 +53,7 @@ jobs:
       - name: Display Project Key
         run: |
           touch sonar-project.properties
-          echo "Project Key: testproj" > sonar-project.properties
+          echo "sonar.projectKey=testproj" > sonar-project.properties
           cat sonar-project.properties
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
