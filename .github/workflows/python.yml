@@ -49,12 +49,15 @@ jobs:
      #   with:
      #    scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
 
+
+      - name: Display Project Key
+        run: |
+          echo "Project Key: ${{ env.SONAR_PROJECT_KEY }}"
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
-        
         with:
           projectBaseDir: ./
-          projectKey: ${{ env.SONAR_PROJECT_KEY }}
+          #projectKey: ${{ env.SONAR_PROJECT_KEY }}
           
         env:  
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
