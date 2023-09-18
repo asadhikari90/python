@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: 3.x  #Can be parametized if needed
       - name: Install tox and any other packages
-        run: pip install tox 
+        run: pip install tox
       
      # - name: SonarQube Quality Gate check
      #   uses: sonarsource/sonarqube-scan-action@master
@@ -52,9 +52,9 @@ jobs:
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
         with:
+          
           projectBaseDir: ./
-          args: >
-            -Dsonar.python.coverage.reportPaths=coverage.xml
+          projectKey: testproj
         env:  
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
