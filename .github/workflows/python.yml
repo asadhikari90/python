@@ -41,14 +41,26 @@ jobs:
       - name: Run tox
         run: tox -e py 
       
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
+     # - name: SonarQube Quality Gate check
+     #   uses: sonarsource/sonarqube-scan-action@master
         # Force to fail step after specific time.
-        timeout-minutes: 5
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
-         SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }} #OPTIONAL
-         SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
+     #   timeout-minutes: 5
+     #   env:
+     #    SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
+     #    SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }} #OPTIONAL
+        # SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
+     #   with:
+     #    scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master 
         with:
-         scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+
+      - name: SonarQube Quality Gate check 
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        with:
+           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   
