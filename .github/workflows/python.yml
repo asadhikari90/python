@@ -13,8 +13,9 @@ on:
   push:
     branches:
       - master # the name of your main branch
-  pull_request:
-    types: [opened, synchronize, reopened]
+  #pull_request:
+   # types: [opened, synchronize, reopened]
+
 
 jobs:
   build:
