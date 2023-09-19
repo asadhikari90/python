@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  #pull_request:
+  pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
       - run: sudo apt-get install jq -y
-      # - run: sudo apt-get install libxrender1 libfontconfig libxext6 libc6 libxml2 -y
+      - run: sudo apt-get install libxrender1 libfontconfig libxext6 libc6 libxml2 -y
 
       - uses: actions/checkout@v2
         with:
@@ -26,37 +26,50 @@ jobs:
         with:
           java-version: 17 #Can be parametized if needed
 
+      #- name: Update JAVA Keystore Certs 
+      #  run: |
+      #    sudo echo "${{ secrets.SONAR_QA_CERT }}" > sonarqa.crt
+      #    sudo keytool -noprompt -importcert -trustcacerts -file "sonarqa.crt" -keystore $JAVA_HOME/lib/security/cacerts -alias myalias1 -storepass changeit
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.x  #Can be parametized if needed
-
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name:  Install dependencies
+        run:  pip install -r requirements.txt
 
       - name: Run tests and generate coverage report
         run: |
-          coverage run --source=myapp -m unittest discover tests/
+          coverage run --source=./ -m unittest discover tests/
           coverage xml -i  
+      
+     # - name: SonarQube Quality Gate check
+     #   uses: sonarsource/sonarqube-scan-action@master
+        # Force to fail step after specific time.
+     #   timeout-minutes: 5
+     #   env:
+     #    SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
+     #    SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }} #OPTIONAL
+        # SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
+     #   with:
+     #    scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
 
-      - name: Create Project Properties file
+
+      - name: Display Project Key
         run: |
           touch sonar-project.properties
-          echo "sonar.projectKey=:${{ inputs.projectkey }}" > sonar-project.properties
-          echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties
-
-
+          echo "sonar.projectKey=testproj" > sonar-project.properties
+          cat sonar-project.properties
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
         with:
           projectBaseDir: ./
-
+          #projectKey: ${{ env.SONAR_PROJECT_KEY }}
+          
         env:  
-          SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }}
-          #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
-
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      
       - name: Upload coverage report to SonarQube
         uses: sonarsource/sonar-scanner-cli@master
         env:
@@ -66,14 +79,11 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_QA_TOKEN }}
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
             -Dsonar.host.url=${{ secrets.SONAR_QA_URL }}
-            -Dsonar.python.coverage.reportPaths=coverage.xml    
+            -Dsonar.python.coverage.reportPaths=coverage.xml
 
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
+
+      - name: SonarQube Quality Gate check 
         uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time.
         timeout-minutes: 5
         env:
-         SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
-         SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }} #OPTIONAL
-         #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
+           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
