@@ -38,7 +38,7 @@ jobs:
       - name: Create Project Properties file
         run: |
           touch sonar-project.properties
-          echo "sonar.projectKey=:${{ inputs.projectkey }}" > sonar-project.properties
+          echo "sonar.projectKey=testproj" > sonar-project.properties
           echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties
 
 
