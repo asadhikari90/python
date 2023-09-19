@@ -48,8 +48,8 @@ jobs:
           projectBaseDir: ./
 
         env:  
-          SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
 
       - name: SonarQube Quality Gate check
