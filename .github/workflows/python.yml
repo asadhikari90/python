@@ -71,7 +71,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       
       - name: Upload coverage report to SonarQube
-        uses: sonarsource/sonar-scanner-cli@master
+        uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
