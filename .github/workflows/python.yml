@@ -1,21 +1,31 @@
-name: Sonarqube linux Build for Python
+#name: Sonarqube Python linux Build
 
+#on:
+ # workflow_dispatch:
+  #workflow_call:
+   # inputs:
+    #  projectkey:
+     #   description: "give the project name in SonarQube"
+      #  default: "${{ github.event.repository.name }}"
+       # type: "string"
+name: Build
 on:
   push:
     branches:
-      - main
+      - master # the name of your main branch
   pull_request:
     types: [opened, synchronize, reopened]
+
 
 jobs:
   build:
     name: Sonarqube Testing
-    runs-on: ubuntu-latest #Can be parametized if needed
+    runs-on: arc-runner-set-dind #Can be parametized if needed
     steps:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
       - run: sudo apt-get install jq -y
-      - run: sudo apt-get install libxrender1 libfontconfig libxext6 libc6 libxml2 -y
+      # - run: sudo apt-get install libxrender1 libfontconfig libxext6 libc6 libxml2 -y
 
       - uses: actions/checkout@v2
         with:
@@ -26,48 +36,38 @@ jobs:
         with:
           java-version: 17 #Can be parametized if needed
 
-      #- name: Update JAVA Keystore Certs 
-      #  run: |
-      #    sudo echo "${{ secrets.SONAR_QA_CERT }}" > sonarqa.crt
-      #    sudo keytool -noprompt -importcert -trustcacerts -file "sonarqa.crt" -keystore $JAVA_HOME/lib/security/cacerts -alias myalias1 -storepass changeit
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.x  #Can be parametized if needed
-      - name: Install tox and any other packages
-        run: pip install tox
-      
-     # - name: SonarQube Quality Gate check
-     #   uses: sonarsource/sonarqube-scan-action@master
-        # Force to fail step after specific time.
-     #   timeout-minutes: 5
-     #   env:
-     #    SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
-     #    SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }} #OPTIONAL
-        # SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
-     #   with:
-     #    scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
 
 
-      - name: Display Project Key
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create Project Properties file
         run: |
           touch sonar-project.properties
-          echo "sonar.projectKey=testproj" > sonar-project.properties
-          cat sonar-project.properties
+          echo "sonar.projectKey=:${{ inputs.projectkey }}" > sonar-project.properties
+          echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties
+
+
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
         with:
           projectBaseDir: ./
-          #projectKey: ${{ env.SONAR_PROJECT_KEY }}
-          
+
         env:  
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }}
+          #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
 
-
-      - name: SonarQube Quality Gate check 
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time.
         timeout-minutes: 5
         env:
-           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   
+         SONAR_TOKEN: ${{ secrets.SONAR_QA_TOKEN }}
+         SONAR_HOST_URL: ${{ secrets.SONAR_QA_URL }} #OPTIONAL
+         #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
