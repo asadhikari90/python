@@ -35,10 +35,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      #- name: Run tests and generate coverage report
-       # run: |
-        #  coverage run --source=./ -m unittest discover tests/
-         # coverage xml -i  
+      - name: Run tests and generate coverage report
+        run: |
+           coverage run --source=<your_source_directory> -m pytest  
 
       - name: Create Project Properties file
         run: |
@@ -57,12 +56,6 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
 
-      
-      - name: Upload coverage report to SonarQube
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
       
       - name: SonarQube Quality Gate check
