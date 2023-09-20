@@ -39,17 +39,17 @@ jobs:
           pip install coverage
 
           
-
-      - name: Run tests and generate coverage report
-        run: |
-           coverage run --source=python -m pytest  
-
       - name: Create Project Properties file
         run: |
           touch sonar-project.properties
           echo "sonar.projectKey=testproj" > sonar-project.properties
-          echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties
+          echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties          
 
+      - name: Run tests and generate coverage report
+        run: |
+           coverage run --source=python -m pytest sonar.python.coverage.reportPaths=coverage.xml
+
+      
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
