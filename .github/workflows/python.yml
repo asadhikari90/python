@@ -16,6 +16,7 @@ jobs:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
       - run: sudo apt-get install jq -y
+      - run: sudo apt-get install -y zip
       # - run: sudo apt-get install libxrender1 libfontconfig libxext6 libc6 libxml2 -y
 
       - uses: actions/checkout@v2
