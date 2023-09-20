@@ -37,12 +37,11 @@ jobs:
         
       - name: Install dependencies
         run: |
-          pip install coverage
-          pip install pytest-sonar  
+          pip install coverage  
 
       - name: Run tests and generate coverage report
         run: |
-           coverage run --source=main.py -m pytest  
+           coverage run --source=python -m pytest  
 
       - name: Create Project Properties file
         run: |
