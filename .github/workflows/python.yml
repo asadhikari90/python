@@ -37,6 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
            pip install -r requirements.txt
+           pip install pytest pytest-cov
            pytest --cov=./python test_is_old.py
 
         working-directory: ./
