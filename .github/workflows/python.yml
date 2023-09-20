@@ -37,8 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
            pip install -r requirements.txt
-           pip install pytest coverage
-           pytest --cov=./ test_is_old.py
+           pytest --cov=./python test_is_old.py
 
         working-directory: ./
 
