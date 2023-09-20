@@ -37,7 +37,6 @@ jobs:
       - name: Install dependencies
         run: |
            pip install -r requirements.txt
-           pip install pytest pytest-cov
            pip install tox
            tox -e py  
 
