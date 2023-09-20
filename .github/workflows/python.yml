@@ -39,6 +39,12 @@ jobs:
 
       - name: Run tests (if applicable)
         run: pytest --cov=./ --cov-report xml:coverage.xml
+
+      - name: List Files
+        run: |
+          ls -R ./
+        working-directory: ./
+
            
       - name: Create Project Properties file
         run: |
