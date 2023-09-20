@@ -1,4 +1,3 @@
-from psycopg2 import is_old
 from datetime import datetime, timedelta
 
 def test_is_old():
