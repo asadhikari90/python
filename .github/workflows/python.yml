@@ -34,6 +34,11 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+        working-directory: ./
+
+      - name: Run tests (if applicable)
+        run: python -m unittest discover
+        working-directory: ./
            
       - name: Create Project Properties file
         run: |
