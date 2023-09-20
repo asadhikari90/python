@@ -47,7 +47,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-           coverage run --source=python -m pytest sonar.python.coverage.reportPaths=coverage.xml
+           coverage run --source=python -m pytest coverage.xml
 
       
 
