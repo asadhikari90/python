@@ -47,7 +47,9 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-           coverage run --source=python -m pytest coverage.xml
+           #coverage run --source=python -m pytest coverage.xml
+           pytest --cov=main.py tests/
+        working-directory: ./
 
       
 
