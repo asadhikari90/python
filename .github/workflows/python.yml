@@ -37,7 +37,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-           coverage run --source=<your_source_directory> -m pytest  
+           coverage run --source=main.py -m pytest  
 
       - name: Create Project Properties file
         run: |
