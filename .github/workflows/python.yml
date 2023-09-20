@@ -38,6 +38,11 @@ jobs:
           pip install pytest
           pip install coverage
 
+      - name: Run tests and generate coverage report
+        run: |
+           pytest --cov=main.py tests/
+        working-directory: ./
+
           
       - name: Create Project Properties file
         run: |
@@ -45,11 +50,7 @@ jobs:
           echo "sonar.projectKey=testproj" > sonar-project.properties
           echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties          
 
-      - name: Run tests and generate coverage report
-        run: |
-           #coverage run --source=python -m pytest coverage.xml
-           pytest --cov=main.py tests/
-        working-directory: ./
+     
 
       
 
