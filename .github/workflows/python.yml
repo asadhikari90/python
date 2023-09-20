@@ -34,15 +34,13 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-             pip install pytest pytest-cov
+             pip install pytest coverage
+             coverage run -m pytest
+        working-directory: ./
 
-
-      - name: Run tests (if applicable)
-        run: pytest --cov=./ --cov-report xml:coverage.xml
-
-      - name: List Files
-        run: |
-          ls -R ./
+      - name: Generate Coverage Report
+        run:  |
+          coverage xml -o coverage.xml
         working-directory: ./
 
            
@@ -51,8 +49,10 @@ jobs:
           touch sonar-project.properties
           echo "sonar.projectKey=testproj" > sonar-project.properties
           echo "sonar.python.coverage.reportPaths=coverage.xml" >> sonar-project.properties
+          Dsonar.python.coverage.reportPaths=coverage.xml
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master 
+        
         with:
           projectBaseDir: ./
 
