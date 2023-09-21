@@ -34,11 +34,11 @@ jobs:
           python-version: 3.x  #Can be parametized if needed
 
 
-      - name: Install dependencies
-        run: |
-           pip install -r requirements.txt
-           pip install tox
-           tox -e py  
+      - name : Install Packages 
+        run : pip install pytest
+      
+      - name : Run tests 
+        run : pytest test.py  
 
         working-directory: ./
 
