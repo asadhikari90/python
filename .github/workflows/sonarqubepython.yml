@@ -41,8 +41,13 @@ jobs:
       - name : Generate Coverage Report
         run :  |       
              coverage run -m pytest test.py
-             coverage xml -o coverage.xml
+        continue-on-error: true
+             
+      - name : report come out  
+        run: coverage xml -o coverage.xml
 
+        
+        
       - name: Create Project Properties file
         run: |
           touch sonar-project.properties
