@@ -33,7 +33,7 @@ jobs:
         with:
           python-version: 3.x  #Can be parametized if needed
 
-      - name : Install Required Packages 
+      - name : Installing Required Packages 
         run :  | 
              pip install pytest coverage
              pip install -r requirements.txt
@@ -45,8 +45,6 @@ jobs:
       - name : Generate Coverage Report
         run: coverage xml -o coverage.xml
 
-        
-        
       - name: Create Project Properties file
         run: |
           touch sonar-project.properties
@@ -71,3 +69,5 @@ jobs:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
          #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
+        with:
+         scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
