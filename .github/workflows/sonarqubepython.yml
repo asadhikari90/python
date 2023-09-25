@@ -40,7 +40,7 @@ jobs:
 
       - name : Generate Coverage Report
         run :  |       
-             coverage run -m pytest test.py
+             python -m unittest test.py
              coverage xml -o coverage.xml
 
       - name: Create Project Properties file
