@@ -39,8 +39,7 @@ jobs:
              pip install -r requirements.txt
 
       - name : Run Code Test
-        run :  |       
-             coverage run -m pytest test.py
+        run : coverage run -m pytest test.py
         continue-on-error: true
              
       - name : Generate Coverage Report
