@@ -36,7 +36,6 @@ jobs:
       - name : Install Required Packages 
         run :  | 
              pip install pytest coverage
-             pip install requirements.txt
 
       - name : Generate Coverage Report
         run :  |       
