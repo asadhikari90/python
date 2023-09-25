@@ -69,5 +69,3 @@ jobs:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
          #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
-        with:
-         scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
