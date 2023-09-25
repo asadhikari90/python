@@ -38,12 +38,12 @@ jobs:
              pip install pytest coverage
              pip install -r requirements.txt
 
-      - name : Generate Coverage Report
+      - name : Run Code Test
         run :  |       
              coverage run -m pytest test.py
         continue-on-error: true
              
-      - name : report come out  
+      - name : Generate Coverage Report
         run: coverage xml -o coverage.xml
 
         
