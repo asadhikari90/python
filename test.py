@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import MagicMock, patch
-from main import User, connect_to_database, is_old, remove_user, insert_employee_record, check_employee_exists, \
+from demo import User, connect_to_database, is_old, remove_user, insert_employee_record, check_employee_exists, \
     get_user_by_id, update_has_been_deleted, send_audit_email, query_launch_darkly
 
 
 class TestScript(unittest.TestCase):
 
-    @patch('main.os.getenv')
+    @patch('demo.os.getenv')
     def test_connect_to_database(self, mock_getenv):
         # Mock the environment variables
         mock_getenv.side_effect = lambda key: {
@@ -29,7 +29,7 @@ class TestScript(unittest.TestCase):
         result = is_old(timestamp)
         self.assertTrue(result)  # Modify the assertion as needed
 
-    @patch('main.requests.delete')
+    @patch('demo.requests.delete')
     def test_remove_user(self, mock_delete):
         # Mock the requests.delete method
         mock_response = MagicMock()
@@ -49,7 +49,7 @@ class TestScript(unittest.TestCase):
             headers={"Authorization": "your_launchdarkly_key"}
         )
 
-    @patch('main.requests.get')
+    @patch('demo.requests.get')
     def test_query_launch_darkly(self, mock_get):
         # Mock the requests.get method
         mock_response = MagicMock()
@@ -79,7 +79,7 @@ class TestScript(unittest.TestCase):
             headers={"Authorization": "your_launchdarkly_key"}
         )
 
-    @patch('main.smtplib.SMTP')
+    @patch('demo.smtplib.SMTP')
     def test_send_audit_email(self, mock_smtp):
         # Mock the smtplib.SMTP class
         mock_server = MagicMock()
@@ -95,7 +95,7 @@ class TestScript(unittest.TestCase):
         mock_server.login.assert_called_once_with("your_delete_threshold", "your_delete_threshold")
         mock_server.sendmail.assert_called_once()
 
-    @patch('main.psycopg2.connect')
+    @patch('demo.psycopg2.connect')
     def test_insert_employee_record(self, mock_connect):
         # Mock the database connection and cursor
         mock_connection = MagicMock()
@@ -115,7 +115,7 @@ class TestScript(unittest.TestCase):
         # Assert that the cursor.execute and connection.commit methods were called
         mock_cursor.execute.assert_called_once()
         mock_connection.commit.assert_called_once()
-    @patch('main.psycopg2.connect')
+    @patch('demo.psycopg2.connect')
     def test_check_employee_exists(self, mock_connect):
         # Mock the database connection and cursor
         mock_connection = MagicMock()
@@ -131,7 +131,7 @@ class TestScript(unittest.TestCase):
         result = check_employee_exists(mock_connection, employee_id)
         self.assertTrue(result)  # Modify the assertion as needed
 
-    @patch('main.psycopg2.connect')
+    @patch('demo.psycopg2.connect')
     def test_get_user_by_id(self, mock_connect):
         # Mock the database connection and cursor
         mock_connection = MagicMock()
@@ -154,7 +154,7 @@ class TestScript(unittest.TestCase):
         self.assertIsNone(result.date_deleted)
         self.assertFalse(result.has_been_deleted)
 
-    @patch('main.psycopg2.connect')
+    @patch('demo.psycopg2.connect')
     def test_update_has_been_deleted(self, mock_connect):
         # Mock the database connection and cursor
         mock_connection = MagicMock()
@@ -171,5 +171,5 @@ class TestScript(unittest.TestCase):
         mock_connection.commit.assert_called_once()
 
 
-if __name__ == "__main__":
-    unittest.main()
+if __name__ == "__demo__":
+    unittest.demo()
