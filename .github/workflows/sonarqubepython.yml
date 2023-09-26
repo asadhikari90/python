@@ -36,7 +36,7 @@ jobs:
       - name : Installing Required Packages 
         run :  | 
              pip install pytest coverage
-             pip install pluggy packaging iniconfig
+             pip install requirements.txt
 
       - name : Run Code Test
         run : coverage run -m pytest ./*.py #Give test file Path
