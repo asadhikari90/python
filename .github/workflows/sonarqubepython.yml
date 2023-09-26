@@ -31,7 +31,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python }}  #Can be parametized if needed
+          python-version: 3.x  #Can be parametized if needed
 
       - name : Installing Required Packages 
         run :  | 
