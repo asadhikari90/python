@@ -1,9 +1,9 @@
 name: Sonarqube linux Build for Python Project
 
-#on:
- # push:
-  #  branches:
-   #   - main
+on:
+  push:
+    branches:
+      - main
  #  pull_request:1
    # types: [opened, synchronize, reopened]
 
@@ -35,8 +35,12 @@ jobs:
 
       - name : Installing Required Packages 
         run :  | 
+             pip install --upgrade pip setuptools
              pip install pytest coverage
              pip install -r requirements.txt
+             pip install veracode-api-signing
+            
+
 
       - name : Run Code Test
         run : coverage run -m pytest ./*.py #Give test file Path.
@@ -69,3 +73,24 @@ jobs:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
          #SONAR_ROOT_CERT: ${{ secrets.SONAR_QA_CERT }}
+
+
+      - name: Veracode Scan
+        run: |
+          # Replace 'your_api_id' and 'your_api_key' with your Veracode API credentials
+          VERACODE_API_KEY: '${{ secrets.VERACODE_API_ID }}'
+          VERACODE_API_SECRET: '${{ secrets.VERACODE_API_KEY }}'
+          sandboxName: 'DemoSandbox'
+          python -m veracode_api_wapper --id "${{ secrets.VERACODE_API_ID }}" --key "${{ secrets.VERACODE_API_KEY }}" --file "$GITHUB_WORKSPACE/veracode-scan-target.zip" 
+      - name: Wait for scan completion
+        run: veracode scan --wait-for-results
+
+      - name: Get scan results
+        run: veracode scan --get-results
+
+      - name: Fail if vulnerabilities found
+        run: |
+          result=$(veracode scan --get-results)
+          if [[ $result == *"Vulnerabilities found"* ]]; then
+            echo "Vulnerabilities found in Veracode scan. Please fix them."
+            exit 1
