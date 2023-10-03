@@ -1,10 +1,10 @@
 name: Sonarqube linux Build for Python Project
 
-on:
-  push:
-    branches:
-      - main
-  #pull_request:1
+#on:
+ # push:
+  #  branches:
+   #   - main
+ #  pull_request:1
    # types: [opened, synchronize, reopened]
 
 
