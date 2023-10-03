@@ -16,9 +16,9 @@ jobs:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
       - run: sudo apt-get install jq -y
-      - run: sudo apt-get install libpq-dev -y
-      - run: sudo apt-get install gcc -y 
-      - run: sudo apt-get install python3-dev -y
+     # - run: sudo apt-get install libpq-dev -y
+     # - run: sudo apt-get install gcc -y 
+     # - run: sudo apt-get install python3-dev -y
 
      # - name: Install Veracode CLI
      # - run: |
