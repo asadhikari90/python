@@ -1,14 +1,17 @@
-name: Veracode Scan
+name: Sonarqube linux Build for Python Project
 
 on:
   push:
     branches:
       - main
+  #pull_request:1
+   # types: [opened, synchronize, reopened]
+
 
 jobs:
   build:
-    name: Veracode Testing
-    runs-on: arc-runner-set-dind #Can be parametized if needed
+    name: Sonarqube Testing
+    runs-on: ubuntu-latest #Can be parametized if needed
     steps:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
