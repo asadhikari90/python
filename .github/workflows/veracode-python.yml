@@ -35,8 +35,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install veracode-api-wrapper
+          pip install --upgrade pip setuptools
           pip install -r requirements.txt
+         # pip install veracode-api-wrapper
           
           
 
