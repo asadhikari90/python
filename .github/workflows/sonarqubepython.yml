@@ -1,4 +1,4 @@
--name: Sonarqube-Veracode linux Build for Python Project
+name: Sonarqube-Veracode linux Build for Python Project
 
 on:
   push:
