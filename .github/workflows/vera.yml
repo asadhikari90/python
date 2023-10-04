@@ -16,33 +16,25 @@ jobs:
       - run: sudo apt-get update -y && sudo apt-get install curl -y
       - run: sudo apt-get install jq -y
 
-     # - name: Install Veracode CLI
-     # - run: |
-     #     curl -O https://downloads.veracode.com/securityscan/VeracodeJavaAPI.jar
-     #     curl -O https://downloads.veracode.com/securityscan/VeracodeJavaWrapper.zip
-     #     unzip -o VeracodeJavaWrapper.zip -d veracode
-     #     rm VeracodeJavaWrapper.zip
             
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.x
+      - name: Zip code
+        run: zip -r code.zip .
 
-      - run: zip -r veracode-scan-target.zip python/publish
-      - run: | 
-            ls python/publish
-            echo break
-            ls python/publish/
-            echo break
-            pwd
-            ls $GITHUB_WORKSPACE
-      - name: Veracode Upload And Scan
-        uses: veracode/veracode-uploadandscan-action@0.2.6
+      - name: Upload to Veracode
+        uses: veracode/veracode-action@v1
         with:
-          appname: 'DemoApp'
-          createprofile: true
-          filepath: $GITHUB_WORKSPACE/veracode-scan-target.zip
-          vid: '${{ secrets.VID }}'
-          vkey: '${{ secrets.VKEY }}'
-          sandboxName: 'DemoSandbox1'
+          upload_path: code.zip
+          application_name: 'DemoApp'
+          sandbox_name: 'DemoSandbox1'
+          veracode_api_id: ${{ secrets.VERACODE_API_ID }}
+          veracode_api_key: ${{ secrets.VERACODE_API_KEY }}
+
+      - name: Wait for Veracode scan
+        uses: Veracode/wait-for-scan@v1
+        with:
+          app_id: ${{ steps.upload.outputs.app_id }}
+          veracode_api_id: ${{ secrets.VID }}
+          veracode_api_key: ${{ secrets.VKEY }}
