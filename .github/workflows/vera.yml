@@ -29,35 +29,20 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-         
-
-      - name: Zip Python Code
-        run: zip -r code.zip .
-
-      - name: Upload to Veracode
-        run: |
-          Veracode_API_ID: '${{ secrets.VID }}'
-          Veracode_API_KEY: '${{ secrets.VKEY }}
+      - run: zip -r veracode-scan-target.zip python/publish
+      - run: | 
+            ls python/publish
+            echo break
+            ls python/publish/
+            echo break
+            pwd
+            ls $GITHUB_WORKSPACE
+      - name: Veracode Upload And Scan
+        uses: veracode/veracode-uploadandscan-action@0.2.6
+        with:
+          appname: 'DemoApp'
+          createprofile: true
+          filepath: $GITHUB_WORKSPACE/veracode-scan-target.zip
+          vid: '${{ secrets.VID }}'
+          vkey: '${{ secrets.VKEY }}'
           sandboxName: 'DemoSandbox1'
-          UPLOAD_URL="https://analysiscenter.veracode.com/api/5.0/uploadfile.do"
-        
-          curl -v -k --user "$VERACODE_API_ID:$VERACODE_API_KEY" \
-          --data-binary "@code.zip" \
-          -H "Content-Type: application/octet-stream" \
-          -H "Accept: application/xml" \
-          "$UPLOAD_URL"
-
-      - name: Initiate Veracode Scan
-        run: |
-          VERACODE_API_ID=$VERACODE_API_ID
-          VERACODE_API_KEY=$VERACODE_API_KEY
-          SCAN_URL="https://analysiscenter.veracode.com/api/5.0/createscan.do"
-        
-          curl -v -k --user "$VERACODE_API_ID:$VERACODE_API_KEY" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Accept: application/xml" \
-          -d "app_name=DemoApp&create_prescan_report=true" \
-          "$SCAN_URL"
