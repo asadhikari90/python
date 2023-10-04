@@ -1,4 +1,4 @@
-name: Sonarqube linux Build for Python Project
+-name: Sonarqube-Veracode linux Build for Python Project
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Sonarqube Testing
+    name: Sonarqube-Veracode Testing
     runs-on: ubuntu-latest #Can be parametized if needed
     steps:
 
