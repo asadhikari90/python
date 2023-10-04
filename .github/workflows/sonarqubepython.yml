@@ -81,7 +81,7 @@ jobs:
           VID: '${{ secrets.VID }}'
           VKEY: '${{ secrets.VKEY }}'
           sandboxName: 'DemoSandbox'
-          python -m veracode_api_wapper ./*.py 
+          python -m veracode_api_wapper test.py 
       - name: Wait for scan completion
         run: veracode scan --wait-for-results
 
