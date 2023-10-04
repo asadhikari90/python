@@ -1,0 +1,49 @@
+name: Veracode-Test in linux
+
+on:
+  push:
+    branches:
+      - main
+ #  pull_request:1
+   # types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: Veracode Testing
+    runs-on: ubuntu-latest #Can be parametized if needed
+    steps:
+
+      - run: sudo apt-get update -y && sudo apt-get install curl -y
+      - run: sudo apt-get install jq -y
+      - run: sudo apt-get install libpq-dev -y
+      - run: sudo apt-get install gcc -y 
+      - run: sudo apt-get install python3-dev -y
+
+     # - name: Install Veracode CLI
+     # - run: |
+     #     curl -O https://downloads.veracode.com/securityscan/VeracodeJavaAPI.jar
+     #     curl -O https://downloads.veracode.com/securityscan/VeracodeJavaWrapper.zip
+     #     unzip -o VeracodeJavaWrapper.zip -d veracode
+     #     rm VeracodeJavaWrapper.zip
+            
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Veracode Upload API
+        run: |
+          pip install veracode-api-wrapper
+          pip install pytest coverage
+          pip install -r requirements.txt
+
+      - name: Upload to Veracode
+        run: |
+          Veracode_API_ID: '${{ secrets.VID }}'
+          Veracode_API_KEY: '${{ secrets.VKEY }}'
+          veracode --action upload --file "./*.py"
+  
+      - name: Wait for Veracode scan
+        run: |
+          veracode --action waitforanalysis
