@@ -15,9 +15,6 @@ jobs:
 
       - run: sudo apt-get update -y && sudo apt-get install curl -y
       - run: sudo apt-get install jq -y
-      - run: sudo apt-get install libpq-dev -y
-      - run: sudo apt-get install gcc -y 
-      - run: sudo apt-get install python3-dev -y
 
      # - name: Install Veracode CLI
      # - run: |
@@ -34,9 +31,9 @@ jobs:
 
       - name: Install Veracode Upload API
         run: |
-          pip3 install veracode-python
-          pip3 install pytest coverage
-          pip3 install -r requirements.txt
+          
+          pip install pytest coverage
+          pip install -r requirements.txt 
 
       - name: Upload to Veracode
         run: |
