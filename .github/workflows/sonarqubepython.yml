@@ -78,10 +78,10 @@ jobs:
       - name: Veracode Scan
         run: |
           # Replace 'your_api_id' and 'your_api_key' with your Veracode API credentials
-          vid: '${{ secrets.vid }}'
-          vkey: '${{ secrets.vkey }}'
+          VID: '${{ secrets.vid }}'
+          VKEY: '${{ secrets.vkey }}'
           sandboxName: 'DemoSandbox'
-          python -m veracode_api_wapper --id "${{ secrets.vid }}" --key "${{ secrets.vkey }}" --file "$GITHUB_WORKSPACE/veracode-scan-target.zip" 
+          python -m veracode_api_wapper --id "${{ secrets.VID }}" --key "${{ secrets.VKEY }}" --file "$GITHUB_WORKSPACE/veracode-scan-target.zip" 
       - name: Wait for scan completion
         run: veracode scan --wait-for-results
 
