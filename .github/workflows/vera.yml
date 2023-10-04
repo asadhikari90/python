@@ -24,7 +24,7 @@ jobs:
         run: zip -r code.zip .
 
       - name: Upload to Veracode
-        uses: veracode/veracode-action@v1
+        uses: veracode/veracode-uploadandscan-action@0.2.6
         with:
           upload_path: code.zip
           application_name: 'DemoApp'
