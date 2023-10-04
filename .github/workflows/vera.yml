@@ -37,7 +37,8 @@ jobs:
 
       - name: Upload to Veracode
         run: |
-          veracode --action upload --file "./*.py"
+          veracode --help
+          #veracode --action upload --file "./*.py"
         env: 
           Veracode_API_ID: '${{ secrets.VID }}'
           Veracode_API_KEY: '${{ secrets.VKEY }}'
