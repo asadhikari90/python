@@ -29,20 +29,35 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install Veracode Upload API
+      - name: Install dependencies
         run: |
-          
-          pip3 install veracode-python
-        
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Adjust if you have a requirements file
+
+      - name: Zip Python Code
+        run: zip -r code.zip .
 
       - name: Upload to Veracode
         run: |
-          veracode --action upload --help
-          #veracode --action upload --file "./*.py"
-        env: 
           Veracode_API_ID: '${{ secrets.VID }}'
-          Veracode_API_KEY: '${{ secrets.VKEY }}'
-  
-      - name: Wait for Veracode scan
+          Veracode_API_KEY: '${{ secrets.VKEY }}
+          sandboxName: 'DemoSandbox1'
+          UPLOAD_URL="https://analysiscenter.veracode.com/api/5.0/uploadfile.do"
+        
+          curl -v -k --user "$VERACODE_API_ID:$VERACODE_API_KEY" \
+          --data-binary "@code.zip" \
+          -H "Content-Type: application/octet-stream" \
+          -H "Accept: application/xml" \
+          "$UPLOAD_URL"
+
+      - name: Initiate Veracode Scan
         run: |
-          veracode --action waitforanalysis
+          VERACODE_API_ID=$VERACODE_API_ID
+          VERACODE_API_KEY=$VERACODE_API_KEY
+          SCAN_URL="https://analysiscenter.veracode.com/api/5.0/createscan.do"
+        
+          curl -v -k --user "$VERACODE_API_ID:$VERACODE_API_KEY" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Accept: application/xml" \
+          -d "app_name=DemoApp&create_prescan_report=true" \
+          "$SCAN_URL"
